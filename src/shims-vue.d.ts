@@ -12,6 +12,8 @@ declare module '@vue/runtime-core' {
   // declare your own store states
 
   // provide typings for `this.$store`
+  declare module '*.vue'
+  declare module '*.json'
   interface ComponentCustomProperties {
     $store: Store<IRootState>
   }

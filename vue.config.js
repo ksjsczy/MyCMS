@@ -4,6 +4,17 @@ const Components = require('unplugin-vue-components/webpack')
 const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
 
 module.exports = defineConfig({
+  devServer: {
+    proxy: {
+      '^/api': {
+        target: 'http://152.136.185.210:5000',
+        pathRewrite: {
+          '^/api': ''
+        },
+        changeOrigin: true
+      }
+    }
+  },
   transpileDependencies: true,
   configureWebpack: {
     resolve: {
@@ -64,9 +75,9 @@ module.exports = defineConfig({
 
         // Custom resolvers, compatible with `unplugin-vue-components`
         // see https://github.com/antfu/unplugin-auto-import/pull/23/
-        resolvers: [
-          /* ... */
-        ],
+        // resolvers: [
+        //   /* ... */
+        // ],
 
         // Generate corresponding .eslintrc-auto-import.json file.
         // eslint globals Docs - https://eslint.org/docs/user-guide/configuring/language-options#specifying-globals

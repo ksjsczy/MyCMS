@@ -1,7 +1,8 @@
 import { createStore } from 'vuex'
 
 import login from '@/store/login'
-const store = createStore({
+import { IRootState } from './types'
+const store = createStore<IRootState>({
   state() {
     return {
       counter: 50

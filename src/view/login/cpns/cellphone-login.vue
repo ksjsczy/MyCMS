@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>PAGE NOT FOUND</h1>
+    手机登陆
   </div>
 </template>
 
