@@ -47,7 +47,7 @@ import CellphoneLogin from './cellphone-login.vue'
 const remember = ref(true)
 const accountRef = ref<InstanceType<typeof AccountLogin>>()
 const handleLoginClick = () => {
-  accountRef.value?.handleLogin()
+  accountRef.value?.handleLogin(remember.value)
 }
 </script>
 

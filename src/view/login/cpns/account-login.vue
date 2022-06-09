@@ -25,11 +25,12 @@
 <script lang="ts" setup>
 import type { FormRules } from 'element-plus'
 import { useStore } from 'vuex';
+import localCache from '@/utils/cache'
 const store = useStore()
 
 const ruleForm = reactive({
-  name: '',
-  password: ''
+  name: localCache.getCache('name') || '',
+  password: localCache.getCache('password') || ''
 })
 const rules = reactive<FormRules>({
   name: [
@@ -58,7 +59,14 @@ const rules = reactive<FormRules>({
   ]
 })
 
-const handleLogin = () => {
+const handleLogin = (remember: boolean) => {
+  if (remember) {
+    localCache.setCache('name', ruleForm.name)
+    localCache.setCache('password', ruleForm.password)
+  } else {
+    localCache.deleteCache('name')
+    localCache.deleteCache('password')
+  }
   store.dispatch('login/accountLoginAction', ruleForm)
 }
 
