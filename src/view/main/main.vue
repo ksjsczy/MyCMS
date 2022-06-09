@@ -1,6 +1,6 @@
 <template>
   <div>
-    我是main界面
+    我是main界面{{ $store.state.login.name }}
   </div>
   <button @click="showRoles">显示所有角色</button>
 </template>

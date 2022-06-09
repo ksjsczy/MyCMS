@@ -13,4 +13,7 @@ const store = createStore<IRootState>({
   }
 })
 
+export function setupStore() {
+  store.dispatch('login/setupLoginState')
+}
 export default store

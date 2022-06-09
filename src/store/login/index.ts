@@ -30,26 +30,34 @@ const login: Module<ILoginState, IRootState> = {
       }
 
       //2.登陆成功
-      commit('changeName', data.data)
-      commit('changeId', data.data)
-      commit('changeToken', data.data)
+      commit('changeName', data.data.name)
+      commit('changeId', data.data.token)
+      commit('changeToken', data.data.id)
 
       //3.保存token
       localCache.setCache('token', data.data.token)
+      localCache.setCache('name', data.data.name)
 
       //4.跳转页面
       router.push('/main')
+    },
+    setupLoginState({ commit }) {
+      const token = localCache.getCache('token')
+      commit('changeToken', token)
+
+      const name = localCache.getCache('name')
+      commit('changeName', name)
     }
   },
   mutations: {
     changeName(state, payload) {
-      state.name = payload.name
+      state.name = payload
     },
     changeToken(state, payload) {
-      state.token = payload.token
+      state.token = payload
     },
     changeId(state, payload) {
-      state.id = payload.id
+      state.id = payload
     }
   }
 }
