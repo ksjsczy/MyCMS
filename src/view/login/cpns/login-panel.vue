@@ -1,7 +1,10 @@
 <template>
-  <div class="login-panel">
+  <div class="login-panel" @keyup.enter="handleLoginClick">
     <h1 class="title">后台管理系统</h1>
-    <el-tabs type="border-card" class="demo-tabs" stretch>
+    <el-tabs type="border-card"
+             class="demo-tabs"
+             v-model="selected"
+             stretch>
       <el-tab-pane>
         <template #label>
           <span class="custom-tabs-label">
@@ -22,7 +25,7 @@
             <span>手机登录</span>
           </span>
         </template>
-        <cellphone-login></cellphone-login>
+        <cellphone-login ref="cellphoneRef"></cellphone-login>
       </el-tab-pane>
     </el-tabs>
     <div class="options">
@@ -33,7 +36,7 @@
     </div>
     <el-button class="login-button"
                type="primary"
-               @click="handleLoginClick">立即登陆</el-button>
+               @click="handleLoginClick">立即登录</el-button>
   </div>
 </template>
 
@@ -45,9 +48,18 @@ import CellphoneLogin from './cellphone-login.vue'
 
 
 const remember = ref(true)
+const selected = ref(0)
 const accountRef = ref<InstanceType<typeof AccountLogin>>()
+const cellphoneRef = ref<InstanceType<typeof CellphoneLogin>>()
+
 const handleLoginClick = () => {
-  accountRef.value?.handleLogin(remember.value)
+  if (selected.value === 0) {
+    //账号登录
+    accountRef.value?.handleLogin(remember.value)
+  } else {
+    //手机登录
+    cellphoneRef.value?.handleLogin(remember.value)
+  }
 }
 </script>
 
@@ -62,7 +74,7 @@ const handleLoginClick = () => {
   text-align: center;
 }
 
-#pane-0 {
+.el-tab-pane {
   margin-top: 20px;
 }
 

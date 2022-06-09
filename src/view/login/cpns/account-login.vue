@@ -23,41 +23,16 @@
 </template>
 
 <script lang="ts" setup>
-import type { FormRules } from 'element-plus'
 import { useStore } from 'vuex';
 import localCache from '@/utils/cache'
+import { rules } from '../config/account-config';
 const store = useStore()
 
 const ruleForm = reactive({
   name: localCache.getCache('name') || '',
   password: localCache.getCache('password') || ''
 })
-const rules = reactive<FormRules>({
-  name: [
-    {
-      required: true,
-      message: '用户名不能为空',
-      trigger: 'blur'
-    },
-    {
-      pattern: /^[a-z0-9]{0,20}$/,
-      message: '用户名由长度小于20的数字和字母组成',
-      trigger: 'blur'
-    },
-  ],
-  password: [
-    {
-      required: true,
-      message: '密码不能为空',
-      trigger: 'blur'
-    },
-    {
-      pattern: /^[a-z0-9]{0,20}$/,
-      message: '用户名由长度小于20的数字和字母组成',
-      trigger: 'blur'
-    },
-  ]
-})
+
 
 const handleLogin = (remember: boolean) => {
   if (remember) {

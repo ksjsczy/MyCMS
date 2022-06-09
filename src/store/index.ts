@@ -13,6 +13,7 @@ const store = createStore<IRootState>({
   }
 })
 
+//初始化loginStore的state
 export function setupStore() {
   store.dispatch('login/setupLoginState')
 }

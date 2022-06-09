@@ -23,13 +23,13 @@ const login: Module<ILoginState, IRootState> = {
       const loginResult = await accountLogin(payload)
       const data = loginResult.data
 
-      //如果登陆失败则弹出错误提示，并return
+      //如果登录失败则弹出错误提示，并return
       if (data === undefined) {
         alert(loginResult.response.data)
         return
       }
 
-      //2.登陆成功
+      //2.登录成功
       commit('changeName', data.data.name)
       commit('changeId', data.data.token)
       commit('changeToken', data.data.id)
@@ -41,6 +41,7 @@ const login: Module<ILoginState, IRootState> = {
       //4.跳转页面
       router.push('/main')
     },
+    //利用localStorage中的数据初始化state
     setupLoginState({ commit }) {
       const token = localCache.getCache('token')
       commit('changeToken', token)
