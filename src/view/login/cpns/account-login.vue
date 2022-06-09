@@ -1,14 +1,13 @@
 <template>
   <div>
     <el-form
-             ref="ruleFormRef"
              :model="ruleForm"
              status-icon
              :rules="rules"
              label-width="70px"
              class="demo-ruleForm">
-      <el-form-item label="用户名" prop="username">
-        <el-input v-model="ruleForm.username"
+      <el-form-item label="用户名" prop="name">
+        <el-input v-model="ruleForm.name"
                   placeholder="请输入用户名" />
       </el-form-item>
       <el-form-item label="密码" prop="password">
@@ -25,13 +24,15 @@
 
 <script lang="ts" setup>
 import type { FormRules } from 'element-plus'
+import { useStore } from 'vuex';
+const store = useStore()
 
 const ruleForm = reactive({
-  username: '',
+  name: '',
   password: ''
 })
 const rules = reactive<FormRules>({
-  username: [
+  name: [
     {
       required: true,
       message: '用户名不能为空',
@@ -55,6 +56,14 @@ const rules = reactive<FormRules>({
       trigger: 'blur'
     },
   ]
+})
+
+const handleLogin = () => {
+  store.dispatch('login/accountLoginAction', ruleForm)
+}
+
+defineExpose({
+  handleLogin
 })
 
 </script>

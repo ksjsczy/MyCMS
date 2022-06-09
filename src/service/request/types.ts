@@ -1,5 +1,4 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
-
 interface IMyRequestInterceptors {
   requestInterceptor?: (config: AxiosRequestConfig) => AxiosRequestConfig
   requestInterceptorCatch?: (err: any) => any

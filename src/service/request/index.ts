@@ -9,21 +9,21 @@ class MyRequest {
     //添加所有实例的拦截器
     this.instance.interceptors.request.use(
       (config: IMyRequestConfig) => {
-        console.log('所有实例的请求成功的拦截')
+        // console.log('所有实例的请求成功的拦截')
         return config
       },
       (err: any) => {
-        console.log('所有实例的请求失败的拦截')
+        // console.log('所有实例的请求失败的拦截')
         return err
       }
     )
     this.instance.interceptors.response.use(
       (config: AxiosResponse) => {
-        console.log('所有实例的响应成功的拦截')
+        // console.log('所有实例的响应成功的拦截')
         return config
       },
       (err: any) => {
-        console.log('所有实例的响应失败的拦截')
+        // console.log('所有实例的响应失败的拦截')
         return err
       }
     )

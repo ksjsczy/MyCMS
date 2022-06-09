@@ -11,7 +11,7 @@
             <span>账号登录</span>
           </span>
         </template>
-        <account-login></account-login>
+        <account-login ref="accountRef"></account-login>
       </el-tab-pane>
       <el-tab-pane>
         <template #label>
@@ -31,7 +31,9 @@
       </div>
       <div class="forgot">忘记密码</div>
     </div>
-    <el-button class="login-button" type="primary">立即登陆</el-button>
+    <el-button class="login-button"
+               type="primary"
+               @click="handleLoginClick">立即登陆</el-button>
   </div>
 </template>
 
@@ -41,7 +43,12 @@ import { Iphone } from '@element-plus/icons-vue'
 import AccountLogin from './account-login.vue'
 import CellphoneLogin from './cellphone-login.vue'
 
+
 const remember = ref(true)
+const accountRef = ref<InstanceType<typeof AccountLogin>>()
+const handleLoginClick = () => {
+  accountRef.value?.handleLogin()
+}
 </script>
 
 <style scoped>
