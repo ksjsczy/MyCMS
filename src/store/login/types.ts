@@ -1,5 +1,5 @@
 export interface ILoginState {
-  name: string
   token: string
-  id: number
+  userinfo: object
+  menu: object[]
 }

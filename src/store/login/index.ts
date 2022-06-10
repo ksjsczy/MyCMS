@@ -2,7 +2,7 @@ import { Module } from 'vuex'
 import { IRootState } from '../types'
 import { ILoginState } from './types'
 
-import { accountLogin } from '@/service/login'
+import { accountLogin, getUserinfoById, getMenuByRoleId } from '@/service/login'
 import { IAccount } from '@/service/login/types'
 import router from '@/router'
 import localCache from '@/utils/cache'
@@ -11,9 +11,9 @@ const login: Module<ILoginState, IRootState> = {
   namespaced: true,
   state() {
     return {
-      name: '',
       token: '',
-      id: 0
+      userinfo: {},
+      menu: []
     }
   },
   actions: {
@@ -21,22 +21,32 @@ const login: Module<ILoginState, IRootState> = {
     async accountLoginAction({ commit }, payload: IAccount) {
       //1.发起账号登录的网络请求
       const loginResult = await accountLogin(payload)
-      const data = loginResult.data
 
       //如果登录失败则弹出错误提示，并return
-      if (data === undefined) {
+      if (loginResult === undefined) {
         alert(loginResult.response.data)
         return
       }
 
-      //2.登录成功
-      commit('changeName', data.data.name)
-      commit('changeId', data.data.token)
-      commit('changeToken', data.data.id)
+      const { token, id } = loginResult.data.data
+      //请求用户信息
+      const userinfoResult = await getUserinfoById(id)
+      const userinfo = userinfoResult.data.data
 
-      //3.保存token
-      localCache.setCache('token', data.data.token)
-      localCache.setCache('name', data.data.name)
+      const roleId = userinfo.role.id
+      //请求角色菜单
+      const menuResult = await getMenuByRoleId(roleId)
+      const menu = menuResult.data.data
+
+      //2.登录成功，更新state中的token,userinfo
+      commit('changeToken', token)
+      commit('changeUserinfo', userinfo)
+      commit('changeMenu', menu)
+
+      //3.保存token,userinfo
+      localCache.setCache('token', token)
+      localCache.setCache('userinfo', userinfo)
+      localCache.setCache('menu', menu)
 
       //4.跳转页面
       router.push('/main')
@@ -45,20 +55,21 @@ const login: Module<ILoginState, IRootState> = {
     setupLoginState({ commit }) {
       const token = localCache.getCache('token')
       commit('changeToken', token)
-
-      const name = localCache.getCache('name')
-      commit('changeName', name)
+      const userinfo = localCache.getCache('userinfo')
+      commit('changeUserinfo', userinfo)
+      const menu = localCache.getCache('menu')
+      commit('changeMenu', menu)
     }
   },
   mutations: {
-    changeName(state, payload) {
-      state.name = payload
-    },
     changeToken(state, payload) {
       state.token = payload
     },
-    changeId(state, payload) {
-      state.id = payload
+    changeUserinfo(state, payload) {
+      state.userinfo = payload
+    },
+    changeMenu(state, payload) {
+      state.menu = payload
     }
   }
 }
