@@ -1,8 +1,8 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside width="200px" class="aside">
-        <nav-menu></nav-menu>
+      <el-aside width="210px" class="aside">
+        <nav-menu :menulist="menulist"></nav-menu>
       </el-aside>
       <el-container>
         <el-header>
@@ -13,14 +13,23 @@
             <el-breadcrumb-item>promotion detail</el-breadcrumb-item>
           </el-breadcrumb>
         </el-header>
-        <el-main class="main">Main页面</el-main>
+        <el-main class="main">
+          <div class="page-info">
+            <router-view></router-view>
+          </div>
+        </el-main>
       </el-container>
     </el-container>
   </div>
 </template>
 
 <script setup lang="ts">
-import NavMenu from '@/components/nav-menu';</script>
+import NavMenu from '@/components/nav-menu';
+import { useStore } from 'vuex';
+const store = useStore()
+const menulist = computed(() => store.state.login.menu)
+</script>
+
 
 <style scoped>
 .aside {

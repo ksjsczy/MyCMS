@@ -27,15 +27,11 @@
     </el-tabs>
     <div class="options">
       <div>
-        <el-checkbox v-model="remember" v-if="selected === '0'"
-          >记住密码</el-checkbox
-        >
+        <el-checkbox v-model="remember" v-if="selected === '0'">记住密码</el-checkbox>
       </div>
       <div class="forgot">忘记密码</div>
     </div>
-    <el-button class="login-button" type="primary" @click="handleLoginClick"
-      >立即登录</el-button
-    >
+    <el-button class="login-button" type="primary" @click="handleLoginClick">立即登录</el-button>
   </div>
 </template>
 
@@ -81,7 +77,7 @@ defineExpose({
   margin-top: 20px;
 }
 
-.demo-tabs > .el-tabs__content {
+.demo-tabs>.el-tabs__content {
   padding: 32px;
   color: #6b778c;
   font-size: 32px;

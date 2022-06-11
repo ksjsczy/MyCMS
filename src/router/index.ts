@@ -7,19 +7,20 @@ const routes: RouteRecordRaw[] = [
     redirect: '/login'
   },
   {
+    name: 'login',
     path: '/login',
-    component: () => import('@/view/login/login.vue')
+    component: () => import('@/views/login/login.vue')
   },
   {
+    name: 'main',
     path: '/main',
-    component: () => import('@/view/main/main.vue')
+    component: () => import('@/views/main/main.vue')
   },
   {
     path: '/:pathMatch(.*)*',
-    component: () => import('@/view/not-found/not-found.vue')
+    component: () => import('@/views/not-found/not-found.vue')
   }
 ]
-
 const router = createRouter({
   routes,
   history: createWebHashHistory()
