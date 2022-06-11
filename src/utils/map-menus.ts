@@ -1,5 +1,7 @@
 import { RouteRecordRaw } from 'vue-router'
 
+let firstMenuUrl = ''
+let firstMenuId = -1
 export function mapMenusToRoutes(menu: any[]): RouteRecordRaw[] {
   //初始化allRoutes，用来保存所有的路由
   const allRoutes: RouteRecordRaw[] = []
@@ -17,11 +19,34 @@ export function mapMenusToRoutes(menu: any[]): RouteRecordRaw[] {
       //如果type为1，说明它含有子菜单，通过递归，遍历它的children
       if (menu.type === 1) {
         addRouteByMenu(menu.children)
+      } else {
+        const route = allRoutes.find((route) => route.path === menu.url)
+        if (route) {
+          routes.push(route)
+          if (!firstMenuUrl) {
+            firstMenuUrl = menu.url
+            firstMenuId = menu.id
+          }
+        }
       }
-      const route = allRoutes.find((route) => route.path === menu.url)
-      if (route) routes.push(route)
     })
   }
   addRouteByMenu(menu)
   return routes
 }
+
+export function mapMenusToBreadcrumb(menulist: any[], path: string) {
+  const breadcrumb: string[] = []
+  function getBreadcrumbByPath(menu: any[]) {
+    for (const submenu of menu) {
+      if (path.includes(submenu.url)) {
+        breadcrumb.push(submenu)
+        if (submenu.type === 1) getBreadcrumbByPath(submenu.children)
+      }
+    }
+  }
+  getBreadcrumbByPath(menulist)
+  return breadcrumb
+}
+
+export { firstMenuUrl, firstMenuId }

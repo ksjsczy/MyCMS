@@ -8,11 +8,12 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'menu',
+  name: 'menus',
   setup() {
     return {}
   }
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

@@ -7,7 +7,7 @@ declare module '*.vue' {
 }
 
 import { Store } from 'vuex'
-import { IRootState } from '@/store/types'
+import { IStoreType } from '@/store/types'
 declare module '@vue/runtime-core' {
   // declare your own store states
 
@@ -15,6 +15,6 @@ declare module '@vue/runtime-core' {
   declare module '*.vue'
   declare module '*.json'
   interface ComponentCustomProperties {
-    $store: Store<IRootState>
+    $store: Store<IStoreType>
   }
 }

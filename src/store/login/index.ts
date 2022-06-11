@@ -30,6 +30,9 @@ const login: Module<ILoginState, IRootState> = {
       }
 
       const { token, id } = loginResult.data.data
+      //保存token
+      commit('changeToken', token)
+      localCache.setCache('token', token)
       //请求用户信息
       const userinfoResult = await getUserinfoById(id)
       const userinfo = userinfoResult.data.data
@@ -39,13 +42,11 @@ const login: Module<ILoginState, IRootState> = {
       const menuResult = await getMenuByRoleId(roleId)
       const menu = menuResult.data.data
 
-      //2.登录成功，更新state中的token,userinfo
-      commit('changeToken', token)
+      //2.登录成功，更新state中的userinfo，menu
       commit('changeUserinfo', userinfo)
       commit('changeMenu', menu)
 
-      //3.保存token,userinfo
-      localCache.setCache('token', token)
+      //3.保存userinfo, menu
       localCache.setCache('userinfo', userinfo)
       localCache.setCache('menu', menu)
 

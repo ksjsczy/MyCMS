@@ -1,17 +1,12 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside width="210px" class="aside">
-        <nav-menu :menulist="menulist"></nav-menu>
+      <el-aside :width="isCollapse ? '65px' : '210px'" class="aside">
+        <nav-menu :menulist="menulist" :is-collapse="isCollapse"></nav-menu>
       </el-aside>
       <el-container>
         <el-header>
-          <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
-            <el-breadcrumb-item><a href="/">promotion management</a></el-breadcrumb-item>
-            <el-breadcrumb-item>promotion list</el-breadcrumb-item>
-            <el-breadcrumb-item>promotion detail</el-breadcrumb-item>
-          </el-breadcrumb>
+          <nav-header @icon-click="foldNavMenu"></nav-header>
         </el-header>
         <el-main class="main">
           <div class="page-info">
@@ -24,21 +19,25 @@
 </template>
 
 <script setup lang="ts">
-import NavMenu from '@/components/nav-menu';
-import { useStore } from 'vuex';
+import { useStore } from '@/store';
+import NavHeader from '../../components/nav-header/src/nav-header.vue';
 const store = useStore()
-const menulist = computed(() => store.state.login.menu)
+const menulist = store.state.login.menu
+const isCollapse = ref(false)
+const foldNavMenu = () => {
+  isCollapse.value = !isCollapse.value
+}
 </script>
 
-
-<style scoped>
-.aside {
-  height: 100vh;
-  background-color: #001529;
-  color: #fff;
-}
-
+<style scoped lang="less">
 .main {
   background-color: #f0f2f5;
+}
+
+.aside {
+  overflow-x: hidden;
+  height: 100vh;
+  background-color: #001529;
+  transition: width 0.3s linear;
 }
 </style>

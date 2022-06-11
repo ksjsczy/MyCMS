@@ -1,15 +1,16 @@
 <template>
   <div class="nav-menu">
     <el-row class="tac">
-      <div class="title">
-        <img src="@/assets/img/logo.svg" class="logo">
-        <h5 class="mb-2">Vue3+TS</h5>
-      </div>
       <el-menu
-               default-active="39"
+               :default-active="firstMenuId + ''"
                class="el-menu-vertical-demo"
                background-color="#001529"
-               text-color="#b7bdc3">
+               text-color="#b7bdc3"
+               :collapse="isCollapse">
+        <div class="title">
+          <img src="@/assets/img/logo.svg" class="logo">
+          <h5 class="mb-2" v-if="!isCollapse">Vue3+TS</h5>
+        </div>
         <template v-for="item in menulist" :key="item.id">
           <el-sub-menu :index="item.id + ''" class="el-sub-menu">
             <template #title>
@@ -31,6 +32,7 @@
 
 <script lang="ts" setup>
 import { Monitor, Setting, ShoppingBag, ChatLineRound } from '@element-plus/icons-vue'
+import { firstMenuId } from '@/utils/map-menus';
 const router = useRouter()
 const icons: any = {
   38: Monitor,
@@ -40,17 +42,23 @@ const icons: any = {
 }
 const props = defineProps<{
   menulist: any[]
+  isCollapse: boolean
 }>()
-const handleMenuItemClick = (item: any) => {
-  router.push(item.url)
+const handleMenuItemClick = (subitem: any) => {
+  //路由跳转
+  router.push(subitem.url)
 }
 </script>
 
 
 <style scoped lan="less">
-.el-menu-vertical-demo {
+.el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 100%;
-  border-right: 0;
+  border-right: none;
+}
+
+.el-menu--collapse {
+  border-right: none;
 }
 
 .is-active {
@@ -74,6 +82,7 @@ const handleMenuItemClick = (item: any) => {
 }
 
 .title {
+  color: #fff;
   display: flex;
   align-items: center;
   padding: 12px 20px;

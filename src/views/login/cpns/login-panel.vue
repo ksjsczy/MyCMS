@@ -47,7 +47,6 @@ const accountRef = ref<InstanceType<typeof AccountLogin>>()
 const cellphoneRef = ref<InstanceType<typeof CellphoneLogin>>()
 
 const handleLoginClick = () => {
-  console.log(typeof selected.value)
   if (selected.value === '0') {
     //账号登录
     accountRef.value?.handleLogin(remember.value)

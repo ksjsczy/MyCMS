@@ -1,29 +1,27 @@
 <template>
   <div>
     <el-form
-      :model="ruleForm"
-      status-icon
-      :rules="rules"
-      label-width="70px"
-      class="demo-ruleForm"
-    >
+             :model="ruleForm"
+             status-icon
+             :rules="rules"
+             label-width="70px"
+             class="demo-ruleForm">
       <el-form-item label="用户名" prop="name">
         <el-input v-model="ruleForm.name" placeholder="请输入用户名" />
       </el-form-item>
       <el-form-item label="密码" prop="password">
         <el-input
-          v-model="ruleForm.password"
-          type="password"
-          autocomplete="off"
-          placeholder="请输入密码"
-        />
+                  v-model="ruleForm.password"
+                  type="password"
+                  autocomplete="off"
+                  placeholder="请输入密码" />
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { useStore } from 'vuex'
+import { useStore } from '@/store'
 import localCache from '@/utils/cache'
 import { rules } from '../config/account-config'
 const store = useStore()
@@ -49,4 +47,5 @@ defineExpose({
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>
