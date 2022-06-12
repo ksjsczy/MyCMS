@@ -45,13 +45,14 @@ const props = defineProps<{
   formItems: any[],
   labelWidth?: string,
   itemLayout?: any
-  colLayout?: any
+  colLayout?: any,
 }>()
 const emit = defineEmits(['updata:model-value'])
 
 const handleValueChange = (value: any, field: string) => {
   emit('updata:model-value', { ...props.modelValue, [field]: value })
 }
+
 </script>
 
 <style scoped>

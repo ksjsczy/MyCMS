@@ -3,9 +3,6 @@ const AutoImport = require('unplugin-auto-import/webpack')
 const Components = require('unplugin-vue-components/webpack')
 const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
 
-const Icons = require('unplugin-icons/webpack')
-const IconsResolver = require('unplugin-icons/resolver')
-
 module.exports = defineConfig({
   devServer: {
     proxy: {
@@ -30,13 +27,7 @@ module.exports = defineConfig({
         /* options */
       }),
       AutoImport({
-        resolvers: [
-          ElementPlusResolver(),
-          // 自动导入图标组件
-          IconsResolver({
-            prefix: 'Icon'
-          })
-        ],
+        resolvers: [ElementPlusResolver()],
         include: [
           /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
           /\.vue$/,
@@ -62,7 +53,7 @@ module.exports = defineConfig({
               ['default', 'axios'] // import { default as axios } from 'axios',
             ],
             '[package-name]': [
-              '[import-names]',
+              '[importNames]',
               // alias
               ['[from]', '[alias]']
             ]
@@ -100,16 +91,7 @@ module.exports = defineConfig({
         }
       }),
       Components({
-        resolvers: [
-          ElementPlusResolver(),
-          // 自动注册图标组件
-          IconsResolver({
-            enabledCollections: ['ep']
-          })
-        ]
-      }),
-      Icons({
-        autoInstall: true
+        resolvers: [ElementPlusResolver()]
       })
     ]
   }

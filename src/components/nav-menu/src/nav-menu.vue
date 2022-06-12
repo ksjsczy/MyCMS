@@ -2,7 +2,7 @@
   <div class="nav-menu">
     <el-row class="tac">
       <el-menu
-               :default-active="firstMenuId + ''"
+               :default-active="activeId + ''"
                class="el-menu-vertical-demo"
                background-color="#001529"
                text-color="#b7bdc3"
@@ -32,7 +32,10 @@
 
 <script lang="ts" setup>
 import { Monitor, Setting, ShoppingBag, ChatLineRound } from '@element-plus/icons-vue'
-import { firstMenuId } from '@/utils/map-menus';
+import { mapPathToMenu } from '@/utils/map-menus'
+const route = useRoute()
+
+
 const router = useRouter()
 const icons: any = {
   38: Monitor,
@@ -44,6 +47,12 @@ const props = defineProps<{
   menulist: any[]
   isCollapse: boolean
 }>()
+
+const activeId = computed(() => {
+  const targetMenu: any[] = []
+  mapPathToMenu(props.menulist, route.path, targetMenu)
+  return targetMenu.pop().id
+})
 const handleMenuItemClick = (subitem: any) => {
   //路由跳转
   router.push(subitem.url)

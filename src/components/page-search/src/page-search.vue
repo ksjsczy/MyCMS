@@ -9,7 +9,7 @@
       </template>
       <template #footer>
         <div class="footer">
-          <div class="reset">
+          <div class="reset" @click="handleResetBtnClick">
             <el-button size="large">
               <el-icon>
                 <Refresh class="icon" />
@@ -17,7 +17,7 @@
               <span>重置</span>
             </el-button>
           </div>
-          <div class="search" @click="handleSearchClick">
+          <div class="search" @click="handleSearchBtnClick">
             <el-button size="large" type="primary">
               <el-icon>
                 <Search class="icon" />
@@ -38,6 +38,7 @@ import { Refresh, Search } from '@element-plus/icons-vue';
 const props = defineProps<{
   searchFormConfig: ISearchFormConfig
 }>()
+const emit = defineEmits(['searchBtnClick', 'resetBtnClick'])
 
 //创建formData的初始值
 const originValue: any = {}
@@ -49,8 +50,15 @@ props.searchFormConfig.formItems.forEach(item => {
 const formData = ref(originValue)
 
 //处理搜索按钮逻辑
+const handleSearchBtnClick = () => {
+  emit('searchBtnClick', formData.value)
+}
 
-
+//处理重置按钮逻辑
+const handleResetBtnClick = () => {
+  formData.value = originValue
+  emit('resetBtnClick')
+}
 </script>
 
 <style scoped>

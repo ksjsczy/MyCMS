@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import Breadcrumb from '@/base-ui/breadcrumb/src/breadcrumb.vue';
-import { mapMenusToBreadcrumb } from '@/utils/map-menus'
+import { mapPathsToBreadcrumb } from '@/utils/map-menus'
 import { useStore } from '@/store';
 import UserInfo from './cpns/user-info.vue';
 import { Fold, Expand } from '@element-plus/icons-vue';
@@ -26,7 +26,7 @@ const route = useRoute()
 const store = useStore()
 const menulist = store.state.login.menu
 
-const breadcrumb = computed(() => mapMenusToBreadcrumb(menulist, route.path))
+const breadcrumb = computed(() => mapPathsToBreadcrumb(menulist, route.path))
 const isFold = ref(true)
 const handleIconClick = () => {
   isFold.value = !isFold.value

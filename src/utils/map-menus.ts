@@ -1,7 +1,6 @@
 import { RouteRecordRaw } from 'vue-router'
 
 let firstMenuUrl = ''
-let firstMenuId = -1
 export function mapMenusToRoutes(menu: any[]): RouteRecordRaw[] {
   //初始化allRoutes，用来保存所有的路由
   const allRoutes: RouteRecordRaw[] = []
@@ -15,6 +14,7 @@ export function mapMenusToRoutes(menu: any[]): RouteRecordRaw[] {
   //遍历menu中的每一个菜单，通过里面的url找到对应的allRoutes中的route，动态添加main的嵌套路由
   const routes: RouteRecordRaw[] = []
   function addRouteByMenu(menus: any[]) {
+    if (menus === undefined) return
     menus.forEach((menu) => {
       //如果type为1，说明它含有子菜单，通过递归，遍历它的children
       if (menu.type === 1) {
@@ -25,7 +25,6 @@ export function mapMenusToRoutes(menu: any[]): RouteRecordRaw[] {
           routes.push(route)
           if (!firstMenuUrl) {
             firstMenuUrl = menu.url
-            firstMenuId = menu.id
           }
         }
       }
@@ -35,18 +34,18 @@ export function mapMenusToRoutes(menu: any[]): RouteRecordRaw[] {
   return routes
 }
 
-export function mapMenusToBreadcrumb(menulist: any[], path: string) {
+export function mapPathsToBreadcrumb(menulist: any[], path: string) {
   const breadcrumb: string[] = []
-  function getBreadcrumbByPath(menu: any[]) {
-    for (const submenu of menu) {
-      if (path.includes(submenu.url)) {
-        breadcrumb.push(submenu)
-        if (submenu.type === 1) getBreadcrumbByPath(submenu.children)
-      }
-    }
-  }
-  getBreadcrumbByPath(menulist)
+  mapPathToMenu(menulist, path, breadcrumb)
   return breadcrumb
 }
 
-export { firstMenuUrl, firstMenuId }
+export function mapPathToMenu(menu: any[], path: string, targetMenu: any[]) {
+  for (const submenu of menu) {
+    if (path.includes(submenu.url)) {
+      targetMenu.push(submenu)
+      if (submenu.type === 1) mapPathToMenu(submenu.children, path, targetMenu)
+    }
+  }
+}
+export { firstMenuUrl }
