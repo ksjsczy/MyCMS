@@ -19,7 +19,7 @@ const login: Module<ILoginState, IRootState> = {
   },
   actions: {
     //账号登录
-    async accountLoginAction({ commit }, payload: IAccount) {
+    async accountLoginAction({ commit, dispatch }, payload: IAccount) {
       //1.发起账号登录的网络请求
       const loginResult = await accountLogin(payload)
 
@@ -33,6 +33,7 @@ const login: Module<ILoginState, IRootState> = {
       //保存token
       commit('changeToken', token)
       localCache.setCache('token', token)
+      dispatch('getInitialDataAction', null, { root: true })
       //请求用户信息
       const userinfoResult = await getUserinfoById(id)
       const userinfo = userinfoResult.data.data
@@ -53,14 +54,17 @@ const login: Module<ILoginState, IRootState> = {
       //4.跳转页面
       router.push('/main')
     },
-    //利用localStorage中的数据初始化state
-    setupLoginState({ commit }) {
+    //利用localStorage中的数据初始化state(防止页面刷新后store数据丢失)
+    setupLoginState({ commit, dispatch }) {
       const token = localCache.getCache('token')
-      commit('changeToken', token)
+      if (token) {
+        commit('changeToken', token)
+        dispatch('getInitialDataAction', null, { root: true })
+      }
       const userinfo = localCache.getCache('userinfo')
-      commit('changeUserinfo', userinfo)
+      if (userinfo) commit('changeUserinfo', userinfo)
       const menu = localCache.getCache('menu')
-      commit('changeMenu', menu)
+      if (menu) commit('changeMenu', menu)
     }
   },
   mutations: {

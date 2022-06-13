@@ -5,7 +5,8 @@
               :page-list="pageList"
               :total-count="totalCount"
               @changeCurrentPage="handleChangeCurrentPage"
-              @changePageSize="handleChangePageSize">
+              @changePageSize="handleChangePageSize"
+              @create-button-click="handleCreateButtonClick">
       <template #status="scope">
         <el-button plain type="success">{{ scope.row.enable === 1 ? '启用' : '禁用' }}</el-button>
       </template>
@@ -15,9 +16,19 @@
       <template #updateAt="scope">
         {{ formatUtcString(scope.row.updateAt) }}
       </template>
+      <template #imgUrl="scope">
+        <div style="display: flex; align-items: center">
+          <el-image
+                    style="width: 100px; height: 100px"
+                    :src="scope.row.imgUrl"
+                    :preview-src-list="[scope.row.imgUrl]"
+                    :preview-teleported="true"
+                    fit="contain" />
+        </div>
+      </template>
       <template #handler="scope">
         <div class="handle-btns">
-          <div class="edit">
+          <div class="edit" @click="handleEditButtonClick(scope.row)">
             <el-icon>
               <Edit />
             </el-icon>
@@ -25,7 +36,7 @@
               编辑
             </el-button>
           </div>
-          <div class="delete">
+          <div class="delete" @click="handleDeleteButtonClick(scope.row)">
             <el-icon>
               <Delete />
             </el-icon>
@@ -36,7 +47,6 @@
         </div>
       </template>
     </my-table>
-
   </div>
 </template>
 
@@ -52,6 +62,8 @@ const props = defineProps<{
   pageName: string,
   storeName: string
 }>()
+
+const emit = defineEmits(['editButtonClick', 'deleteButtonClick', 'createButtonClick'])
 
 //保存从page-search传递过来的queryInfo
 const queryInfoRef = ref({})
@@ -94,6 +106,17 @@ watch(pageInfo, () => {
 defineExpose({
   getPageList
 })
+
+//处理编辑和新建按钮的逻辑
+const handleEditButtonClick = (item: any) => {
+  emit('editButtonClick', item)
+}
+const handleDeleteButtonClick = (item: any) => {
+  emit('deleteButtonClick', item)
+}
+const handleCreateButtonClick = () => {
+  emit('createButtonClick')
+}
 </script>
 
 <style scoped>

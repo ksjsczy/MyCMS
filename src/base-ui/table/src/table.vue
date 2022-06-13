@@ -7,7 +7,7 @@
             <h2>用户列表</h2>
           </slot>
         </div>
-        <div class="create-button">
+        <div class="create-button" @click="handleCreateButtonClick">
           <slot name="createButton">
             <el-button type="primary" size="large">
               <el-icon>
@@ -56,13 +56,17 @@ const props = defineProps<{
   totalCount: number
 }>()
 
-const emit = defineEmits(['changeCurrentPage', 'changePageSize'])
+const emit = defineEmits(['changeCurrentPage', 'changePageSize', 'createButtonClick'])
 
 const handleChangeCurrentPage = (currentPage: number) => {
   emit('changeCurrentPage', currentPage)
 }
 const handleChangePageSize = (pageSize: number) => {
   emit('changePageSize', pageSize)
+}
+
+const handleCreateButtonClick = () => {
+  emit('createButtonClick')
 }
 </script>
 

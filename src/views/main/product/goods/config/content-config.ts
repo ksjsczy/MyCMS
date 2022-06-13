@@ -5,7 +5,7 @@ export const contentTableConfig = {
   showSelectColumn: true,
 
   propList: [
-    { prop: 'name', label: '商品名称', minWidth: '100' },
+    { prop: 'name', label: '商品名称', minWidth: '100', slotName: 'name'},
     { prop: 'oldPrice', label: '原价', minWidth: '100' },
     { prop: 'newPrice', label: '现价', minWidth: '100' },
     { prop: 'imgUrl', label: '商品图片', minWidth: '100', slotName: 'imgUrl' },

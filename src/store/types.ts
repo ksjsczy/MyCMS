@@ -2,7 +2,9 @@ import { ILoginState } from './login/types'
 import { ISystemState } from './main/system/types'
 
 export interface IRootState {
-  counter: number
+  departmentList: any[]
+  roleList: any[]
+  menuList: any[]
 }
 
 export interface IStoreType extends IRootState {
