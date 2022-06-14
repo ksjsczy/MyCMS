@@ -16,7 +16,9 @@
     </page-content>
     <page-modal
                 ref="pageModalRef"
-                :modalFormConfig="modalForm">
+                :modalFormConfig="modalForm"
+                :dialogTitle="dialogTitle"
+                pageName="users">
     </page-modal>
   </div>
 </template>
@@ -34,6 +36,7 @@ const { pageContentRef, handleSearchBtnClick, handleResetBtnClick } = usePageSea
 //处理page-modal的相关逻辑
 const store = useStore()
 const pageModalRef = ref()
+const dialogTitle = ref('')
 
 const modalForm = computed(() => {
   modalFormConfig.formItems.forEach((item: any) => {
@@ -47,17 +50,34 @@ const modalForm = computed(() => {
 })
 
 const handleEditButtonClick = (item: any) => {
+  modalFormConfig.formItems.forEach(item => {
+    if (item.isHidden !== undefined) {
+      item.isHidden = true
+    }
+  })
+  dialogTitle.value = '编辑用户'
   pageModalRef.value.dialogVisible = true
   pageModalRef.value.formData = item
+  pageModalRef.value.isCreate = false
 }
 
 const handleDeleteButtonClick = (item: any) => {
-  console.log('按下了删除');
+  store.dispatch('system/deleteItemAction', {
+    pageName: 'users',
+    requestParams: item.id
+  })
 }
 
 const handleCreateButtonClick = () => {
+  modalFormConfig.formItems.forEach(item => {
+    if (item.isHidden !== undefined) {
+      item.isHidden = false
+    }
+  })
+  dialogTitle.value = '创建用户'
   pageModalRef.value.dialogVisible = true
   pageModalRef.value.formData = pageModalRef.value.originValue
+  pageModalRef.value.isCreate = true
 }
 
 </script>

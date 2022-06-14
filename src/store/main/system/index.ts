@@ -1,4 +1,4 @@
-import { getPageList } from '@/service/main/system'
+import { getPageList, createItem, deleteItem, editItem } from '@/service/main/system'
 import { IRootState } from '@/store/types'
 import { Module } from 'vuex'
 import { ISystemState } from './types'
@@ -20,6 +20,21 @@ const system: Module<ISystemState, IRootState> = {
       const pageNameCapital = pageName.slice(0, 1).toUpperCase() + pageName.slice(1)
       commit(`change${pageNameCapital}List`, usersList)
       commit(`change${pageNameCapital}Count`, usersCount)
+    },
+    async createItemAction({ dispatch }, payload) {
+      const { pageName, requestParams } = payload
+      await createItem(pageName, requestParams)
+      dispatch('getPageListAction', { pageName })
+    },
+    async deleteItemAction({ dispatch }, payload) {
+      const { pageName, requestParams } = payload
+      await deleteItem(pageName, requestParams)
+      dispatch('getPageListAction', { pageName })
+    },
+    async editItemAction({ dispatch }, payload) {
+      const { pageName, id, requestParams } = payload
+      await editItem(pageName, id, requestParams)
+      dispatch('getPageListAction', { pageName })
     }
   },
   mutations: {

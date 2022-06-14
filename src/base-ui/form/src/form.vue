@@ -5,7 +5,7 @@
       <el-row>
         <template v-for="item in formItems" key="item.field">
           <el-col v-bind="colLayout">
-            <el-form-item :label="item.label" :style="itemLayout">
+            <el-form-item :label="item.label" :style="itemLayout" v-if="item.isHidden !== true">
               <template v-if="item.type === 'input'">
                 <el-input
                           :model-value="modelValue[item.field]"

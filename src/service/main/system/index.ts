@@ -37,10 +37,24 @@ export function getMenuList() {
   })
 }
 
-//创建新用户
-export function createUser(data: any) {
+//创建新用户/部门/菜单/角色
+export function createItem(pageName: string, data: any) {
   return myRequest.post({
-    url: 'users',
+    url: pageName,
+    data
+  })
+}
+
+//删除用户/部门/菜单/角色
+export function deleteItem(pageName: string, id: number) {
+  return myRequest.delete({
+    url: `${pageName}/${id}`
+  })
+}
+
+export function editItem(pageName: string, id: number, data: any) {
+  return myRequest.patch({
+    url: `${pageName}/${id}`,
     data
   })
 }
