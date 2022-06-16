@@ -18,26 +18,44 @@
                 ref="pageModalRef"
                 :modalFormConfig="modalForm"
                 :dialogTitle="dialogTitle"
-                pageName="users">
+                pageName="users"
+                storeName="system">
     </page-modal>
+
   </div>
 </template>
 
 <script lang="ts" setup>
 import { searchFormConfig } from './config/search-config';
 import { contentTableConfig } from './config/content-config';
-import { modalFormConfig } from './config/modal-config'
 import { usePageSearch } from '@/hooks/use-page-search'
-import { useStore } from '@/store';
+import { usePageModal } from '@/hooks/use-page-modal'
+import { modalFormConfig } from './config/modal-config'
+import { useStore } from '@/store'
 
 //处理page-search的搜索和重置按钮的逻辑
 const { pageContentRef, handleSearchBtnClick, handleResetBtnClick } = usePageSearch()
 
 //处理page-modal的相关逻辑
+const editCb = () => {
+  //如果有不需要展示的内容，则将其隐藏（比如编辑用户对话框中，不需要展示密码）
+  modalFormConfig.formItems.forEach(item => {
+    if (item.isHidden !== undefined) {
+      item.isHidden = true
+    }
+  })
+}
+const createCb = () => {
+  //在新建对话框中，显示所有内容（包括在编辑对话框中被隐藏的内容）
+  modalFormConfig.formItems.forEach(item => {
+    if (item.isHidden !== undefined) {
+      item.isHidden = false
+    }
+  })
+}
+//用于展示select输入框中展示的内容
 const store = useStore()
-const pageModalRef = ref()
-const dialogTitle = ref('')
-
+//加载下拉选择框中的选择内容
 const modalForm = computed(() => {
   modalFormConfig.formItems.forEach((item: any) => {
     if (item.field === 'departmentId') {
@@ -49,36 +67,16 @@ const modalForm = computed(() => {
   return modalFormConfig
 })
 
-const handleEditButtonClick = (item: any) => {
-  modalFormConfig.formItems.forEach(item => {
-    if (item.isHidden !== undefined) {
-      item.isHidden = true
-    }
-  })
-  dialogTitle.value = '编辑用户'
-  pageModalRef.value.dialogVisible = true
-  pageModalRef.value.formData = item
-  pageModalRef.value.isCreate = false
-}
 
-const handleDeleteButtonClick = (item: any) => {
-  store.dispatch('system/deleteItemAction', {
-    pageName: 'users',
-    requestParams: item.id
-  })
-}
 
-const handleCreateButtonClick = () => {
-  modalFormConfig.formItems.forEach(item => {
-    if (item.isHidden !== undefined) {
-      item.isHidden = false
-    }
-  })
-  dialogTitle.value = '创建用户'
-  pageModalRef.value.dialogVisible = true
-  pageModalRef.value.formData = pageModalRef.value.originValue
-  pageModalRef.value.isCreate = true
-}
+const {
+  handleEditButtonClick,
+  handleCreateButtonClick,
+  handleDeleteButtonClick,
+  dialogTitle,
+  pageModalRef
+} = usePageModal('用户', editCb, createCb)
+
 
 </script>
 

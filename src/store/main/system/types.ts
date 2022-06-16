@@ -13,4 +13,6 @@ export interface IUsersList {
 export interface ISystemState {
   usersList: IUsersList[]
   usersCount: number
+  departmentList: any[]
+  departmentCount: number
 }

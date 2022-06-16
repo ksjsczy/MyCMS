@@ -5,11 +5,16 @@
                width="30%"
                center
                destroy-on-close>
-      <my-form
-               v-bind="modalFormConfig"
-               :model-value="formData"
-               @updata:model-value="formData = $event">
-      </my-form>
+      <template v-if="dialogType !== 'delete'">
+        <my-form
+                 v-bind="modalFormConfig"
+                 :model-value="formData"
+                 @updata:model-value="formData = $event">
+        </my-form>
+      </template>
+      <template v-else>
+        <div class="delete-text">确定要删除该{{ itemName }}吗?</div>
+      </template>
       <template #footer>
         <span class="dialog-footer">
           <el-button type="primary" @click="handleComfirmClick">确定</el-button>
@@ -26,9 +31,12 @@ import { useStore } from '@/store';
 const props = defineProps<{
   modalFormConfig: any,
   dialogTitle: string,
-  pageName: string
+  pageName: string,
+  storeName: string
 }>()
 const store = useStore()
+
+const itemName = ref('')
 
 const originValue: any = {}
 props.modalFormConfig.formItems.forEach((item: any) => {
@@ -37,18 +45,18 @@ props.modalFormConfig.formItems.forEach((item: any) => {
 
 const formData = ref(originValue)
 const dialogVisible = ref(false)
-const isCreate = ref(true)
+const dialogType = ref('create')
 
 const handleComfirmClick = () => {
   dialogVisible.value = false
 
-  if (isCreate.value) {
+  if (dialogType.value === 'create') {
     //创建
-    store.dispatch('system/createItemAction', {
+    store.dispatch(`${props.storeName}/createItemAction`, {
       pageName: props.pageName,
       requestParams: formData.value
     })
-  } else {
+  } else if (dialogType.value === 'edit') {
     //编辑
     const requestParams: any = {}
     props.modalFormConfig.formItems.forEach((item: any) => {
@@ -56,10 +64,16 @@ const handleComfirmClick = () => {
         requestParams[item.field] = formData.value[item.field]
       }
     })
-    store.dispatch('system/editItemAction', {
+    store.dispatch(`${props.storeName}/editItemAction`, {
       pageName: props.pageName,
       requestParams,
       id: formData.value.id
+    })
+  } else if (dialogType.value === 'delete') {
+    //删除
+    store.dispatch(`${props.storeName}/deleteItemAction`, {
+      pageName: props.pageName,
+      requestParams: formData.value.id
     })
   }
 
@@ -68,9 +82,13 @@ defineExpose({
   dialogVisible,
   formData,
   originValue,
-  isCreate
+  dialogType,
+  itemName
 })
 </script>
 
 <style scoped>
+.delete-text {
+  font-size: 16px;
+}
 </style>

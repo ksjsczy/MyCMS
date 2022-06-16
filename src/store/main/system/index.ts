@@ -1,40 +1,35 @@
-import { getPageList, createItem, deleteItem, editItem } from '@/service/main/system'
 import { IRootState } from '@/store/types'
 import { Module } from 'vuex'
 import { ISystemState } from './types'
+import {
+  useGetPageList,
+  useCreateItem,
+  useDeleteItem,
+  useEditItem
+} from '@/hooks/use-actions-in-common'
 
 const system: Module<ISystemState, IRootState> = {
   namespaced: true,
   state() {
     return {
       usersList: [],
-      usersCount: 0
+      usersCount: 0,
+      departmentList: [],
+      departmentCount: 0
     }
   },
   actions: {
     async getPageListAction({ commit }, payload) {
-      const { pageName, requestParams } = payload
-      const pageListResult = await getPageList(pageName, requestParams)
-      const usersList = pageListResult.data.data.list
-      const usersCount = pageListResult.data.data.totalCount
-      const pageNameCapital = pageName.slice(0, 1).toUpperCase() + pageName.slice(1)
-      commit(`change${pageNameCapital}List`, usersList)
-      commit(`change${pageNameCapital}Count`, usersCount)
+      useGetPageList(commit, payload)
     },
     async createItemAction({ dispatch }, payload) {
-      const { pageName, requestParams } = payload
-      await createItem(pageName, requestParams)
-      dispatch('getPageListAction', { pageName })
+      useCreateItem(dispatch, payload)
     },
     async deleteItemAction({ dispatch }, payload) {
-      const { pageName, requestParams } = payload
-      await deleteItem(pageName, requestParams)
-      dispatch('getPageListAction', { pageName })
+      useDeleteItem(dispatch, payload)
     },
     async editItemAction({ dispatch }, payload) {
-      const { pageName, id, requestParams } = payload
-      await editItem(pageName, id, requestParams)
-      dispatch('getPageListAction', { pageName })
+      useEditItem(dispatch, payload)
     }
   },
   mutations: {
@@ -43,6 +38,12 @@ const system: Module<ISystemState, IRootState> = {
     },
     changeUsersCount(state, payload) {
       state.usersCount = payload
+    },
+    changeDepartmentList(state, payload) {
+      state.departmentList = payload
+    },
+    changeDepartmentCount(state, payload) {
+      state.departmentCount = payload
     }
   }
 }

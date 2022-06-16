@@ -1,27 +1,42 @@
 <template>
-  <div class="category">
-    <h2>
-      categorycategorycategorycategorycategorycategorycategorycategorycategorycategorycategorycategorycategorycategorycategorycategorycategorycategorycategorycategorycategorycategorycategorycategory
-    </h2>
-    <div class="image">
-      <el-image
-                style="width: 100px; height: 100px"
-                src="http://s11.mogucdn.com/mlcdn/17f85e/180927_5i77e04lhaalbg3dai0j4588lbahh_640x960.jpg_560x999.jpg"
-                :preview-src-list="['http://s11.mogucdn.com/mlcdn/17f85e/180927_5i77e04lhaalbg3dai0j4588lbahh_640x960.jpg_560x999.jpg']"
-                fit="contain" />
-    </div>
+  <div>
+    <page-search :searchFormConfig="searchFormConfig"
+                 @search-btn-click="handleSearchBtnClick"
+                 @reset-btn-click="handleResetBtnClick">
+    </page-search>
+    <page-content
+                  :content-table-config="contentTableConfig"
+                  page-name="category"
+                  store-name="product"
+                  ref="pageContentRef"
+                  @create-button-click="handleCreateButtonClick"
+                  @edit-button-click="handleEditButtonClick"
+                  @delete-button-click="handleDeleteButtonClick">
+    </page-content>
+    <page-modal
+                :modal-form-config="modalFormConfig"
+                :dialog-title="dialogTitle"
+                page-name="category"
+                store-name="product"
+                ref="pageModalRef">
+    </page-modal>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { searchFormConfig } from './config/search-config'
+import { contentTableConfig } from './config/content-config';
+import { modalFormConfig } from './config/modal-config'
+import { usePageSearch } from '@/hooks/use-page-search';
+import { usePageModal } from '@/hooks/use-page-modal'
 
-export default defineComponent({
-  name: 'category',
-  setup() {
-    return {}
-  }
-})
+const { pageContentRef, handleSearchBtnClick, handleResetBtnClick } = usePageSearch()
+const {
+  handleEditButtonClick,
+  handleCreateButtonClick,
+  handleDeleteButtonClick,
+  dialogTitle,
+  pageModalRef } = usePageModal('类别')
 </script>
 
 <style scoped>

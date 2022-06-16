@@ -18,4 +18,6 @@ export interface IGoodsList {
 export interface IProductState {
   goodsList: IGoodsList[]
   goodsCount: number
+  categoryList: IGoodsList[]
+  categoryCount: number
 }

@@ -4,7 +4,7 @@ export interface IFormItems {
   field:string
   type:IFormType
   label:string
-  placeholder:string
+  placeholder?:string
   options?:any[]
   otherOptions?:any
 }
