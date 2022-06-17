@@ -15,6 +15,7 @@
       <template v-else>
         <div class="delete-text">确定要删除该{{ itemName }}吗?</div>
       </template>
+      <slot></slot>
       <template #footer>
         <span class="dialog-footer">
           <el-button type="primary" @click="handleComfirmClick">确定</el-button>

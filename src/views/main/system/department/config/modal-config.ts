@@ -7,6 +7,13 @@ export const modalFormConfig = {
       placeholder: '请输入您要创建的部门名称'
     },
     {
+      field: 'parentId',
+      type: 'select',
+      label: '上级部门',
+      placeholder: '请选择上级部门',
+      options: []
+    },
+    {
       field: 'leader',
       type: 'input',
       label: '领导名称',

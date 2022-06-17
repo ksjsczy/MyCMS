@@ -1,18 +1,51 @@
 <template>
   <div class="role">
-    <h2>role</h2>
+    <page-search
+                 :searchFormConfig="searchFormConfig"
+                 @searchBtnClick="handleSearchBtnClick"
+                 @resetBtnClick="handleResetBtnClick">
+    </page-search>
+    <page-content
+                  pageName="role"
+                  storeName="system"
+                  :contentTableConfig="contentTableConfig"
+                  @editButtonClick="handleEditButtonClick"
+                  @deleteButtonClick="handleDeleteButtonClick"
+                  @createButtonClick="handleCreateButtonClick"
+                  ref="pageContentRef">
+    </page-content>
+    <page-modal
+                ref="pageModalRef"
+                :modalFormConfig="modalFormConfig"
+                :dialogTitle="dialogTitle"
+                pageName="role"
+                storeName="system">
+      <el-tree
+               :data="$store.state.menuList"
+               show-checkbox
+               node-key="id"
+               :props="{ children: 'children', label: 'name' }" />
+    </page-modal>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { searchFormConfig } from './config/search-config';
+import { contentTableConfig } from './config/content-config';
+import { modalFormConfig } from './config/modal-config'
+import { usePageSearch } from '@/hooks/use-page-search'
+import { usePageModal } from '@/hooks/use-page-modal'
 
-export default defineComponent({
-  name: 'role',
-  setup() {
-    return {}
-  }
-})
+const { pageContentRef, handleSearchBtnClick, handleResetBtnClick } = usePageSearch()
+const {
+  handleEditButtonClick,
+  handleCreateButtonClick,
+  handleDeleteButtonClick,
+  dialogTitle,
+  pageModalRef
+} = usePageModal('角色')
+
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

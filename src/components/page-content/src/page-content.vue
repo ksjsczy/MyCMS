@@ -26,6 +26,9 @@
                     fit="contain" />
         </div>
       </template>
+      <template #parentId="scope">
+        {{ mapDepartmentIdToName(scope.row.parentId) }}
+      </template>
       <template #handler="scope">
         <div class="handle-btns">
           <div class="edit" @click="handleEditButtonClick(scope.row)">
@@ -55,6 +58,7 @@ import MyTable from '@/base-ui/table'
 import { useStore } from '@/store';
 import { formatUtcString } from '@/utils/formatter'
 import { Edit, Delete } from '@element-plus/icons-vue';
+import { mapDepartmentIdToName } from '@/utils/map-departmentId'
 const store = useStore()
 
 const props = defineProps<{
