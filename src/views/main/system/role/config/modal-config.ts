@@ -15,5 +15,5 @@ export const modalFormConfig = {
   ],
   labelWidth: '70px',
   itemLayout: { padding: '10px 40px' },
-  span: 24
+  span: 24,
 }

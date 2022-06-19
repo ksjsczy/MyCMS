@@ -1,9 +1,10 @@
 export function usePageModal(
   translatedPageName: string,
-  editCb: () => void = () => {},
+  editCb: (item: any) => void = () => {},
   createCb: () => void = () => {}
 ) {
   const pageModalRef = ref()
+
   //dialogTitle用于dialog对话框标题的切换(新建用户/编辑用户)
   const dialogTitle = ref('')
 
@@ -15,7 +16,7 @@ export function usePageModal(
     //编辑用户的对话框，应当展示出相应的初始值
     pageModalRef.value.formData = item
     pageModalRef.value.dialogType = 'edit'
-    editCb()
+    editCb(item)
   }
 
   const handleCreateButtonClick = () => {

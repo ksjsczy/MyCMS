@@ -6,7 +6,7 @@ import { accountLogin, getUserinfoById, getMenuByRoleId } from '@/service/login'
 import { IAccount } from '@/service/login/types'
 import router from '@/router'
 import localCache from '@/utils/cache'
-import { mapMenusToRoutes } from '@/utils/map-menus'
+import { mapMenusToRoutes, mapMenusToPermisssions } from '@/utils/map-menus'
 
 const login: Module<ILoginState, IRootState> = {
   namespaced: true,
@@ -14,7 +14,8 @@ const login: Module<ILoginState, IRootState> = {
     return {
       token: '',
       userinfo: {},
-      menu: []
+      menu: [],
+      permissions: []
     }
   },
   actions: {
@@ -76,10 +77,13 @@ const login: Module<ILoginState, IRootState> = {
     },
     changeMenu(state, payload) {
       state.menu = payload
+      //动态添加路由
       const routes = mapMenusToRoutes(payload)
       routes.forEach((route) => {
         router.addRoute('main', route)
       })
+      //添加权限
+      state.permissions = mapMenusToPermisssions(state.menu)
     }
   }
 }

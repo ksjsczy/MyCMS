@@ -25,6 +25,7 @@ export function deleteItem(pageName: string, id: number) {
 
 //编辑item
 export function editItem(pageName: string, id: number, data: any) {
+  console.log(id, data)
   return myRequest.patch({
     url: `${pageName}/${id}`,
     data

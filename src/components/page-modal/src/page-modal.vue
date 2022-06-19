@@ -11,11 +11,11 @@
                  :model-value="formData"
                  @updata:model-value="formData = $event">
         </my-form>
+        <slot></slot>
       </template>
       <template v-else>
         <div class="delete-text">确定要删除该{{ itemName }}吗?</div>
       </template>
-      <slot></slot>
       <template #footer>
         <span class="dialog-footer">
           <el-button type="primary" @click="handleComfirmClick">确定</el-button>
@@ -33,7 +33,8 @@ const props = defineProps<{
   modalFormConfig: any,
   dialogTitle: string,
   pageName: string,
-  storeName: string
+  storeName: string,
+  otherInfo?: any
 }>()
 const store = useStore()
 
@@ -53,18 +54,20 @@ const handleComfirmClick = () => {
 
   if (dialogType.value === 'create') {
     //创建
+    const requestParams = { ...formData.value, ...props.otherInfo }
     store.dispatch(`${props.storeName}/createItemAction`, {
       pageName: props.pageName,
-      requestParams: formData.value
+      requestParams
     })
   } else if (dialogType.value === 'edit') {
     //编辑
-    const requestParams: any = {}
+    let requestParams: any = {}
     props.modalFormConfig.formItems.forEach((item: any) => {
       if (item.isHidden !== true) {
         requestParams[item.field] = formData.value[item.field]
       }
     })
+    requestParams = { ...requestParams, ...props.otherInfo }
     store.dispatch(`${props.storeName}/editItemAction`, {
       pageName: props.pageName,
       requestParams,
@@ -77,7 +80,9 @@ const handleComfirmClick = () => {
       requestParams: formData.value.id
     })
   }
-
+  //当创建/编辑/删除了item，需要刷新数据，否则更新的数据不能同步在页面上。
+  //比如创建了一个部门后，在别的部门选择上级部门的下拉菜单时，不能显示刚才创建的那个部门，刷新页面后可以显示
+  store.dispatch('getInitialDataAction')
 }
 defineExpose({
   dialogVisible,

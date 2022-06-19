@@ -1,6 +1,6 @@
 
 export const contentTableConfig = {
-  title: '用户列表',
+  title: '部门列表',
   showIndexColumn: true,
   showSelectColumn: true,
 

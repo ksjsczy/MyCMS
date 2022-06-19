@@ -5,8 +5,19 @@
               :page-list="pageList"
               :total-count="totalCount"
               @changeCurrentPage="handleChangeCurrentPage"
-              @changePageSize="handleChangePageSize"
-              @create-button-click="handleCreateButtonClick">
+              @changePageSize="handleChangePageSize">
+      <template #headerHandler>
+        <div v-if="isCreate"
+             class="header-handler"
+             @click="handleCreateButtonClick">
+          <el-button type="primary" size="large">
+            <el-icon>
+              <FolderAdd />
+            </el-icon>
+            <span>新建</span>
+          </el-button>
+        </div>
+      </template>
       <template #status="scope">
         <el-button plain type="success">{{ scope.row.enable === 1 ? '启用' : '禁用' }}</el-button>
       </template>
@@ -31,7 +42,7 @@
       </template>
       <template #handler="scope">
         <div class="handle-btns">
-          <div class="edit" @click="handleEditButtonClick(scope.row)">
+          <div v-if="isCreate" class="edit" @click="handleEditButtonClick(scope.row)">
             <el-icon>
               <Edit />
             </el-icon>
@@ -39,7 +50,7 @@
               编辑
             </el-button>
           </div>
-          <div class="delete" @click="handleDeleteButtonClick(scope.row)">
+          <div v-if="isDelete" class="delete" @click="handleDeleteButtonClick(scope.row)">
             <el-icon>
               <Delete />
             </el-icon>
@@ -59,6 +70,9 @@ import { useStore } from '@/store';
 import { formatUtcString } from '@/utils/formatter'
 import { Edit, Delete } from '@element-plus/icons-vue';
 import { mapDepartmentIdToName } from '@/utils/map-departmentId'
+import { usePermissions } from '@/hooks/use-permissions.ts'
+import { FolderAdd } from '@element-plus/icons-vue';
+
 const store = useStore()
 
 const props = defineProps<{
@@ -67,6 +81,11 @@ const props = defineProps<{
   storeName: string
 }>()
 
+const isCreate = usePermissions('create', props.pageName)
+const isEdit = usePermissions('update', props.pageName)
+const isDelete = usePermissions('delete', props.pageName)
+const isQuery = usePermissions('query', props.pageName)
+
 const emit = defineEmits(['editButtonClick', 'deleteButtonClick', 'createButtonClick'])
 
 //保存从page-search传递过来的queryInfo
@@ -74,6 +93,7 @@ const queryInfoRef = ref({})
 
 //定义getPageList函数，用来请求pageList的数据
 const getPageList = (queryInfo: any = {}) => {
+  if (!isQuery) return
   queryInfoRef.value = queryInfo
   store.dispatch(`${props.storeName}/getPageListAction`, {
     pageName: props.pageName,

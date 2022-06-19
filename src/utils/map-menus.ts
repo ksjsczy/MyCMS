@@ -1,3 +1,4 @@
+import menu from '@/router/main/system/menu/menu'
 import { RouteRecordRaw } from 'vue-router'
 
 let firstMenuUrl = ''
@@ -49,3 +50,33 @@ export function mapPathToMenu(menu: any[], path: string, targetMenu: any[]) {
   }
 }
 export { firstMenuUrl }
+
+export function mapMenuListToLeafKeys(menuList: any) {
+  const res: any[] = []
+  const dfs = (menuList: any[]) => {
+    menuList.forEach((menu) => {
+      if (!menu.children) {
+        res.push(menu.id)
+      } else {
+        dfs(menu.children)
+      }
+    })
+  }
+  dfs(menuList)
+  return res
+}
+
+export function mapMenusToPermisssions(menuList: any[]) {
+  const res: any[] = []
+  const dfs = (menus: any[]) => {
+    menus.forEach((menu) => {
+      if (!menu.children) {
+        if (menu.permission) res.push(menu.permission)
+      } else {
+        dfs(menu.children)
+      }
+    })
+  }
+  dfs(menuList)
+  return res
+}

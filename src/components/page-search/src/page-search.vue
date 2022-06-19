@@ -1,5 +1,5 @@
 <template>
-  <div class="page-search">
+  <div v-if="isQuery" class="page-search">
     <my-form
              v-bind="searchFormConfig"
              :model-value="formData"
@@ -35,6 +35,9 @@
 import MyForm from '@/base-ui/form'
 import { ISearchFormConfig } from '@/base-ui/form/types'
 import { Refresh, Search } from '@element-plus/icons-vue';
+import { usePermissions } from '@/hooks/use-permissions.ts'
+const isQuery = usePermissions('query')
+
 const props = defineProps<{
   searchFormConfig: ISearchFormConfig
 }>()

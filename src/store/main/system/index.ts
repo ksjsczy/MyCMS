@@ -17,7 +17,9 @@ const system: Module<ISystemState, IRootState> = {
       departmentList: [],
       departmentCount: 0,
       roleList: [],
-      roleCount: 0
+      roleCount: 0,
+      menuList: [],
+      menuCount: 0
     }
   },
   actions: {
@@ -52,6 +54,12 @@ const system: Module<ISystemState, IRootState> = {
     },
     changeRoleCount(state, payload) {
       state.roleCount = payload
+    },
+    changeMenuList(state, payload) {
+      state.menuList = payload
+    },
+    changeMenuCount(state, payload) {
+      state.menuCount = payload
     }
   }
 }

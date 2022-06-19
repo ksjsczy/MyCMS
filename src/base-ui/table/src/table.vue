@@ -4,22 +4,17 @@
       <div class="header">
         <div class="title">
           <slot name="title">
-            <h2>用户列表</h2>
+            <h2>{{ title }}</h2>
           </slot>
         </div>
-        <div class="create-button" @click="handleCreateButtonClick">
-          <slot name="createButton">
-            <el-button type="primary" size="large">
-              <el-icon>
-                <FolderAdd />
-              </el-icon>
-              <span>新建</span>
-            </el-button>
-          </slot>
-        </div>
+        <slot name="headerHandler"></slot>
       </div>
     </slot>
-    <el-table :data="pageList" border style="width: 100%">
+    <el-table
+              :data="pageList"
+              border
+              style="width: 100%"
+              row-key="id">
       <template v-for="propitem in propList" :key="propitem.prop">
         <el-table-column v-bind="propitem" align="center" show-overflow-tooltip>
           <template #default="scope">
@@ -47,16 +42,16 @@
 </template>
 
 <script setup lang="ts">
-import { FolderAdd } from '@element-plus/icons-vue';
 
 const props = defineProps<{
   propList: any[],
   pageList: any[],
   pageInfo: any,
-  totalCount: number
+  totalCount: number,
+  title: string
 }>()
 
-const emit = defineEmits(['changeCurrentPage', 'changePageSize', 'createButtonClick'])
+const emit = defineEmits(['changeCurrentPage', 'changePageSize'])
 
 const handleChangeCurrentPage = (currentPage: number) => {
   emit('changeCurrentPage', currentPage)
@@ -65,9 +60,6 @@ const handleChangePageSize = (pageSize: number) => {
   emit('changePageSize', pageSize)
 }
 
-const handleCreateButtonClick = () => {
-  emit('createButtonClick')
-}
 </script>
 
 <style scoped>

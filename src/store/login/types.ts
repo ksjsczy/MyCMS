@@ -14,4 +14,5 @@ export interface ILoginState {
   token: string
   userinfo: IUserinfo
   menu: object[]
+  permissions: any[]
 }

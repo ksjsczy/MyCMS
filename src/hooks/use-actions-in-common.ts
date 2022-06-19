@@ -4,7 +4,7 @@ export async function useGetPageList(commit: any, payload: any) {
   const { pageName, requestParams } = payload
   const pageListResult = await getPageList(pageName, requestParams)
   const itemList = pageListResult.data.data.list
-  const itemCount = pageListResult.data.data.totalCount
+  const itemCount = pageListResult.data.data.totalCount || pageListResult.data.data.list.length
   const pageNameCapital = pageName.slice(0, 1).toUpperCase() + pageName.slice(1)
   commit(`change${pageNameCapital}List`, itemList)
   commit(`change${pageNameCapital}Count`, itemCount)
